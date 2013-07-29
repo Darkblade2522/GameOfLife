@@ -10,9 +10,9 @@ $(document).ready(function(){
     [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-     [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-     [0,0,0,0,0,0,1,0,1,0,0,0,0,0,0],
-     [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+     [0,0,0,0,0,0,1,0,0,0,0,0,0,0,0],
+     [0,0,0,0,0,0,1,0,0,0,0,0,0,0,0],
+     [0,0,0,0,0,0,1,0,0,0,0,0,0,0,0],
      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
      [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -21,12 +21,13 @@ $(document).ready(function(){
     function computeNextGrid(currentGrid){
         var nextGrid = currentGrid;
         
-        for (var i in currentGrid){
-            for (var j in currentGrid[i]){
-                //Count neighbors
-                var count;
-                
-                
+        for (var i = 0 ; i < currentGrid.length -1; i++){
+            for (var j =0 ; j < currentGrid[i].length -1; j++){
+                //Count neighbours
+                var count = countNeighbours(currentGrid, i, j);
+                if (count != 0)
+                    console.log("x:" + i + "  y:" + j + "   count:"  +count);
+                    
                 //Decide action
                 switch (count) {
                     case 0:
@@ -46,6 +47,31 @@ $(document).ready(function(){
         }
         
         return nextGrid;
+    }
+    
+    function countNeighbours(grid, x, y){
+        var count = 0;
+        x = parseInt(x);
+        y = parseInt(y);
+        for (var i = -1 ; i < 2 ; i++){
+            for (var j = -1 ; j < 2 ; j++){
+                var x2 = x + i,
+                    y2 = y + j;
+                if(i === 0  && j === 0){
+                    //continue;
+                }
+                
+                //Check borders
+                else if (grid[x2] === undefined || grid[x2][y2] === undefined){
+                    //continue;
+                }
+                //Test if alive
+                else if (grid[x2][y2] == 1){
+                    count++;
+                }
+            }
+        }
+        return count;
     }
     
     function displayGrid(grid){
